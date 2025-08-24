@@ -44,9 +44,12 @@ pip install -r requirements.txt
 ```
 <br/>
 iii) Running the server <br/>
-``` uvicorn app.main:app --host 0.0.0.0 --port 10000 --reload ```
+``` 
+uvicorn app.main:app --host 0.0.0.0 --port 10000 --reload
+```
 It will run on localhost:10000 but if it doesn't then go to Command Prompt and find your PC’s IP address:<br/>
-Windows: ```ipconfig```<br/>
+Windows: ```
+ipconfig ```<br/>
 macOS/Linux: ```ifconfig or ip a ``` <br/>
 then it will give the ip address in the form 192.168... then go to Chat.jsx and change the line from http://192.168.1.5:10000 -> http://<your-ip-address>:10000<br/>
 3. Frontend Setup <br/>
@@ -59,7 +62,9 @@ npx react-native run-ios       # for iOS
 <br/>
 4. Enviroment Values<br/>
 Create a .env file in backend/: <br/>
-``` GEMINI_API_KEY=your_api_key_here ```
+``` 
+GEMINI_API_KEY=your_api_key_here
+```
 <br/>
 🔄 <b>Technical Workflow</b><br/>
 flowchart TD <br/>
