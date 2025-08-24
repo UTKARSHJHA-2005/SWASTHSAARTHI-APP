@@ -51,7 +51,7 @@ It will run on localhost:10000 but if it doesn't then go to Command Prompt and f
 Windows: <pre>
 ipconfig </pre><br/>
 macOS/Linux: <pre>ifconfig or ip a </pre> <br/>
-then it will give the ip address in the form 192.168... then go to Chat.jsx and change the line from http://192.168.1.5:10000 -> http://<your-ip-address>:10000<br/>
+then it will give the ip address in the form 192.168... then go to Chat.jsx and change the line from http://192.168.1.5:10000 -> http://your-ip-address:10000<br/>
 3. Frontend Setup <br/>
 <pre>
 cd SWASTHSAARTH-APP
