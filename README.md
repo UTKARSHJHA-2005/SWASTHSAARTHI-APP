@@ -25,46 +25,46 @@ Backend:<br/>
 ✅ Smooth chat-like UI with typing indicators and file/image previews<br/>
 ⚙️<b> Setup & Installation</b><br/>
 1. Clone Repository<br/>
-```
+<pre>
 git clone https://github.com/UTKARSHJHA-2005/SWASTHSAARTHI-APP.git
 cd SWASTHSAARTH-APP
-```
+</pre>
 <br/>
 2. Backend Setup<br/>
 i) Create a Virtual Enviroment<br/>
-```
+<pre>
 python -m venv venv
 source venv/bin/activate  # On macOS/Linux
        venv\Scripts\activate      # On Windows
-```
+</pre>
 <br/>
 ii) Install Dependencies<br/>
-```
+<pre>
 pip install -r requirements.txt
-```
+</pre>
 <br/>
 iii) Running the server <br/>
-``` 
+<pre>
 uvicorn app.main:app --host 0.0.0.0 --port 10000 --reload
-```
+</pre>
 It will run on localhost:10000 but if it doesn't then go to Command Prompt and find your PC’s IP address:<br/>
-Windows: ```
-ipconfig ```<br/>
-macOS/Linux: ```ifconfig or ip a ``` <br/>
+Windows: <pre>
+ipconfig </pre><br/>
+macOS/Linux: <pre>ifconfig or ip a </pre> <br/>
 then it will give the ip address in the form 192.168... then go to Chat.jsx and change the line from http://192.168.1.5:10000 -> http://<your-ip-address>:10000<br/>
 3. Frontend Setup <br/>
-```
+<pre>
 cd SWASTHSAARTH-APP
 npm install
 npx react-native run-android   # for Android
 npx react-native run-ios       # for iOS
-```
+</pre>
 <br/>
 4. Enviroment Values<br/>
 Create a .env file in backend/: <br/>
-``` 
+<pre>
 GEMINI_API_KEY=your_api_key_here
-```
+</pre>
 <br/>
 🔄 <b>Technical Workflow</b><br/>
 flowchart TD <br/>
