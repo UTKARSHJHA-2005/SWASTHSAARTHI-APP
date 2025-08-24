@@ -76,3 +76,5 @@ flowchart TD <br/>
     MLModel -->|Prediction| FastAPI <br/>
     FastAPI -->|Diagnosis, Severity, Precautions| App <br/>
     App --> User <br/>
+<b>DEMO</b> <br/>
+https://drive.google.com/file/d/1o6FixsJFQIFG-g6-MXbqMZ90Nb3JBFLY/view?usp=sharing
