@@ -1,25 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    ScrollView,
-    Image,
-    ActivityIndicator,
-    StyleSheet
-} from "react-native";
-import axios from "axios";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { launchImageLibrary } from "react-native-image-picker";
-import Icon from "react-native-vector-icons/Ionicons";
+import React, { useState, useRef, useEffect } from "react";// React
+import { View, Text, TextInput, TouchableOpacity, Modal, ScrollView, Image, ActivityIndicator, StyleSheet } from "react-native";// React-Native
+import axios from "axios"; // Axios
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";// Keyboard
+import { launchImageLibrary } from "react-native-image-picker";// Image Picker
+import Icon from "react-native-vector-icons/Ionicons";//Icon
+import Login from "./Login";
 
 export default function Chat() {
-    const [message, setMessage] = useState("");
-    const [chatHistory, setChatHistory] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [image, setImage] = useState(null);
-    const scrollViewRef = useRef();
+    const [message, setMessage] = useState("");// Message State
+    const [chatHistory, setChatHistory] = useState([]);// Chat History State
+    const [loading, setLoading] = useState(false);// Loading State
+    const [image, setImage] = useState(null);// Image State
+    const scrollViewRef = useRef();// Scroll View 
 
     // Auto scroll to bottom
     useEffect(() => {
@@ -32,7 +24,6 @@ export default function Chat() {
             mediaType: "photo",
             quality: 0.7,
         });
-
         if (!result.didCancel && result.assets && result.assets.length > 0) {
             setImage(result.assets[0]);
         }
@@ -48,9 +39,8 @@ export default function Chat() {
             type: "image/jpeg",
             name: "upload.jpg",
         });
-
         try {
-            const res = await axios.post("http://192.168.1.5:10000/predict/image", formData, {
+            const res = await axios.post("http://10.103.2.23:10000/predict/image", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             const predictedDisease = res.data?.predicted_disease || "No prediction available.";
@@ -82,26 +72,23 @@ export default function Chat() {
         const userMessage = message;
         setMessage("");
         try {
-            const res = await axios.post("http://192.168.1.5:10000/chat/", {
+            const res = await axios.post("http://10.103.2.23:10000/chat/", {
                 user_input: userMessage,
                 user_id: "test_user_123",
             });
             console.log("RAW RESPONSE:", res.data);
             const responseData = typeof res.data === "string" ? JSON.parse(res.data) : res.data;
-
             const precautions = Array.isArray(responseData.precautions)
                 ? responseData.precautions.join("\n• ")
                 : "No precautions provided";
-
             const formattedResponse = `🩺 Disease: ${responseData.disease || "N/A"}
 📜 Description: ${responseData.description || "N/A"}
 ⚠️ Severity: ${responseData.severity || "N/A"}
 ✅ Precautions:\n• ${precautions}
 🚨 Urgency: ${responseData.urgency || "N/A"}`;
-
             setChatHistory((prev) => [...prev, { type: "bot", content: formattedResponse }]);
         } catch (error) {
-            console.error("CHAT API ERROR:", error.response?.data || error.message);
+            console.log("CHAT API ERROR:", error.response?.data || error.message);
             setChatHistory((prev) => [
                 ...prev,
                 { type: "error", content: "Error processing your request. Please try again." },
@@ -113,13 +100,8 @@ export default function Chat() {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{ flexGrow: 1 }}
-                enableOnAndroid={true}
-                extraScrollHeight={90}
-                keyboardShouldPersistTaps="handled"
-            >
+            <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} enableOnAndroid={true} extraScrollHeight={90}
+                keyboardShouldPersistTaps="handled">
                 {/* Header */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>AI Medical Assistant</Text>
@@ -135,33 +117,28 @@ export default function Chat() {
                         </View>
                     )}
                     {chatHistory.map((msg, index) => (
-                        <View key={index}
-                            style={[
-                                styles.messageContainer,
-                                msg.type === "user" ? styles.userAlign : styles.botAlign,
-                            ]}
-                        >
-                            <View
-                                style={[
-                                    styles.messageBubble,
-                                    msg.type === "user"
-                                        ? styles.userBubble
-                                        : msg.type === "error"
-                                            ? styles.errorBubble
-                                            : styles.botBubble,
-                                ]}
-                            >
+                        <View key={index} style={[
+                            styles.messageContainer,
+                            msg.type === "user" ? styles.userAlign : styles.botAlign,
+                        ]}>
+                            <View style={[styles.messageBubble,
+                            msg.type === "user" ? styles.userBubble
+                                : msg.type === "error" ? styles.errorBubble
+                                    : styles.botBubble,]}>
                                 {msg.image && (
-                                    <Image
-                                        source={{ uri: msg.image }}
-                                        style={styles.uploadedImage}
-                                    />
+                                    <Image source={{ uri: msg.image }} style={styles.uploadedImage} />
                                 )}
                                 <Text style={styles.messageText}>{msg.content}</Text>
                             </View>
                         </View>
                     ))}
-
+                    <Modal visible={chatHistory.length >= 8} transparent={true} animationType="slide" >
+                        <View style={styles.modalOverlay}>
+                            <View>
+                                <Login />
+                            </View>
+                        </View>
+                    </Modal>
                     {loading && (
                         <View style={styles.loaderBox}>
                             <ActivityIndicator size="small" color="gray" />
@@ -169,32 +146,27 @@ export default function Chat() {
                         </View>
                     )}
                 </ScrollView>
-
                 {/* Input Section */}
-                <View style={styles.inputSection}>
-                    <TextInput
-                        value={message}
-                        onChangeText={setMessage}
-                        placeholder="Describe your symptoms..."
+                <View style={[
+                    styles.inputSection,
+                    chatHistory.length >= 8 && { opacity: 0.5 } // faded when locked
+                ]}>
+                    <TextInput value={message} onChangeText={setMessage} placeholder="Describe your symptoms..."
                         style={styles.input}
-                        multiline
-                    />
-                    <TouchableOpacity onPress={pickImage} style={styles.iconButton}>
+                        editable={chatHistory.length < 8} // disable typing
+                        multiline />
+                    <TouchableOpacity onPress={pickImage} style={styles.iconButton} disabled={chatHistory.length >= 8}>
                         <Icon name="image-outline" size={24} color="black" />
                     </TouchableOpacity>
                     {image && (
                         <Image source={{ uri: image.uri }} style={styles.previewImage} />
                     )}
-                    <TouchableOpacity
-                        onPress={handleSend}
-                        disabled={loading || (!message.trim() && !image)}
-                        style={[
-                            styles.sendButton,
-                            loading || (!message.trim() && !image)
-                                ? styles.disabledSend
-                                : styles.activeSend,
-                        ]}
-                    >
+                    <TouchableOpacity onPress={handleSend}
+                        disabled={loading || (!message.trim() && !image) || chatHistory.length >= 8}
+                        style={[styles.sendButton,
+                        loading || (!message.trim() && !image) || chatHistory.length >= 8
+                            ? styles.disabledSend
+                            : styles.activeSend,]}>
                         <Icon name="send-outline" size={20} color="#10b981" />
                     </TouchableOpacity>
                 </View>
@@ -205,7 +177,10 @@ export default function Chat() {
 
 // Styles
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#f0f6ff" },
+    container: {
+        flex: 1,
+        backgroundColor: "#f0f6ff"
+    },
     header: {
         backgroundColor: "white",
         padding: 15,
@@ -214,17 +189,82 @@ const styles = StyleSheet.create({
         borderColor: "#ddd",
         alignItems: "center",
     },
-    headerTitle: { fontSize: 20, fontWeight: "bold", color: "#2563eb" },
-    headerSubtitle: { fontSize: 12, color: "gray" },
-    chatContainer: { flex: 1, padding: 10 },
+    headerTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#2563eb"
+    },
+    headerSubtitle: {
+        fontSize: 12,
+        color: "gray"
+    },
+    chatContainer: {
+        flex: 1,
+        padding: 10
+    },
     welcomeBox: {
         padding: 10,
         backgroundColor: "#dbeafe",
         borderRadius: 10,
         marginVertical: 10,
     },
-    welcomeText: { color: "#1d4ed8", textAlign: "center" },
-    messageContainer: { flexDirection: "row", marginVertical: 5, width: "100%" },
+    welcomeText: {
+        color: "#1d4ed8",
+        textAlign: "center"
+    },
+    messageContainer: {
+        flexDirection: "row",
+        marginVertical: 5,
+        width: "100%"
+    },
+    loginBox: {
+        padding: 20,
+        backgroundColor: "white",
+        borderTopWidth: 1,
+        borderColor: "#ddd",
+    },
+    loginTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginBottom: 10,
+        color: "#2563eb",
+        textAlign: "center",
+    },
+    loginInput: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 10,
+    },
+    loginButton: {
+        backgroundColor: "#2563eb",
+        padding: 12,
+        borderRadius: 8,
+        alignItems: "center",
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "white", // dark background
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    // modalBox: {
+    //     width: "85%",
+    //     backgroundColor: "white",
+    //     borderRadius: 12,
+    //     padding: 20,
+    //     shadowColor: "#000",
+    //     shadowOffset: { width: 0, height: 2 },
+    //     shadowOpacity: 0.25,
+    //     shadowRadius: 4,
+    //     elevation: 5,
+    // },
+
+    loginButtonText: {
+        color: "white",
+        fontWeight: "bold",
+    },
     userAlign: { justifyContent: "flex-end" },
     botAlign: { justifyContent: "flex-start" },
     messageBubble: {
@@ -232,8 +272,14 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         maxWidth: "70%",
     },
-    userBubble: { backgroundColor: "#27B4F5", borderBottomRightRadius: 0 },
-    botBubble: { backgroundColor: "#f3f4f6", borderBottomLeftRadius: 0 },
+    userBubble: {
+        backgroundColor: "#27B4F5",
+        borderBottomRightRadius: 0
+    },
+    botBubble: {
+        backgroundColor: "#f3f4f6",
+        borderBottomLeftRadius: 0
+    },
     errorBubble: { backgroundColor: "#fecaca" },
     messageText: { color: "black" },
     uploadedImage: {
@@ -249,7 +295,10 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 8,
     },
-    loaderText: { marginLeft: 8, color: "gray" },
+    loaderText: {
+        marginLeft: 8,
+        color: "gray"
+    },
     inputSection: {
         flexDirection: "row",
         alignItems: "center",

@@ -1,20 +1,21 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-import Chat from "./Chat"
-import {
-  SafeAreaProvider,
-} from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { enableScreens } from 'react-native-screens';
+import Chat from "./Chat";
+import Login from "./Login";
 
+enableScreens(); 
 
-function App() {
-  return (<Chat />
+const Stack = createStackNavigator();
 
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Chat" screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Chat" component={Chat} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-export default App;
