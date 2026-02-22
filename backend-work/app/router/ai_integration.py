@@ -35,8 +35,9 @@ async def predict_disease_from_symptoms(request: SymptomRequest):
     prompt = f"""
     You are a medical assistant.
 
-    Based on these symptoms: {request.symptoms}
+    Detect the language of this text: {request.symptoms}
 
+Then respond in the same language.
     Return ONLY valid JSON in this exact format:
 
     {{
