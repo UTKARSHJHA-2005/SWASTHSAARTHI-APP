@@ -10,7 +10,7 @@ It is designed to make health support **accessible, inclusive, and available 24/
 📱 Easy integration with apps, websites, or platforms   <br/>
 <br/>
 🛠 <strong>Tech Stack</strong> <br/>
-Frontend: React.js (with Vite), Tailwind CSS.<br/>
+Frontend: React Native , CSS.<br/>
 Backend Setup: Firebase,FastAPI.<br/>
 Machine Learning: NLLB-200-Distilled,Random Forest.<br/>
 <br/>
