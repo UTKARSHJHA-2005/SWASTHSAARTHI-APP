@@ -40,7 +40,7 @@ export default function Chat() {
             name: "upload.jpg",
         });
         try {
-            const res = await axios.post("http://192.168.1.1:10000/predict/image", formData, {
+            const res = await axios.post("http://192.168.1.7:10000/predict/image", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             const predictedDisease = res.data?.predicted_disease || "No prediction available.";
@@ -72,7 +72,7 @@ export default function Chat() {
         const userMessage = message;
         setMessage("");
         try {
-            const res = await axios.post("http://192.168.1.8:10000/predict/symptoms/", {
+            const res = await axios.post("http://192.168.1.7:10000/predict/symptoms/", {
                 symptoms: userMessage,
             });
             console.log("RAW RESPONSE:", res.data);
