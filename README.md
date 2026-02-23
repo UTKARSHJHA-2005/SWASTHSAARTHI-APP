@@ -24,8 +24,8 @@ Machine Learning: NLLB-200-Distilled,Random Forest.<br/>
 <strong>Installation And Setup</strong><br/>
 1) Clone the Repository<br/>
    ```
-   git clone https://github.com/UTKARSHJHA-2005/SWASTHSAARTHI.git
-   cd SWASTHSAARTHI
+   git clone https://github.com/UTKARSHJHA-2005/SWASTHSAARTHI-APP.git
+   cd SWASTHSAARTHI-APP
    ```
    <br/>
 2) Create a Virtual Enviroment (for backend)
